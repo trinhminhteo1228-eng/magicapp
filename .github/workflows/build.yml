@@ -12,13 +12,14 @@ jobs:
         with:
           node-version: 18
           
-      - name: Install dependencies
+      - name: Install Dependencies & CLI
         run: |
           npm install
+          npm install -g @capacitor/cli @capacitor/core @capacitor/ios
           
-      - name: Initialize Capacitor iOS
+      - name: Create Capacitor Config
         run: |
-          npx cap init "Magics App" "com.mquang.magicsapp" --web-dir www
+          npx cap init "Magics App" "com.mquang.magicsapp" --web-dir www --yes
           npx cap add ios
           npx cap sync ios
           

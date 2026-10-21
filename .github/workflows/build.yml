@@ -12,23 +12,27 @@ jobs:
         with:
           node-version: 18
           
-      - name: Install Dependencies & CLI
+      - name: Install Ionic & Capacitor CLI
         run: |
+          npm install -g @ionic/cli @capacitor/cli
           npm install
-          npm install -g @capacitor/cli @capacitor/core @capacitor/ios
           
-      - name: Create Capacitor Config
+      - name: Build Web Assets & Sync
         run: |
-          npx cap init "Magics App" "com.mquang.magicsapp" --web-dir www --yes
-          npx cap add ios
-          npx cap sync ios
+          npx cap init "Magics App" "com.mquang.magicsapp" --web-dir www --yes || true
+          npx cap sync ios || true
           
-      - name: Build iOS App Archive
+      - name: Compile and Archive Project
         run: |
-          cd ios/App
-          xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos -archivePath build/App.xcarchive archive CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+          if [ -d "ios/App" ]; then
+            cd ios/App
+            xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos -archivePath build/App.xcarchive archive CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+          else
+            echo "iOS folder not found, skipping build"
+            exit 1
+          fi
           
-      - name: Export IPA
+      - name: Package IPA
         run: |
           mkdir -p Payload
           cp -r ios/App/build/App.xcarchive/Products/Applications/App.app Payload/

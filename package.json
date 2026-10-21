@@ -1,0 +1,16 @@
+{
+  "name": "magics-app",
+  "version": "1.0.0",
+  "description": "Magics App Cloud Injector",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'Building web assets...'"
+  },
+  "dependencies": {
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/ios": "^6.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.0.0"
+  }
+}
